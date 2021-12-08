@@ -7,10 +7,10 @@ options(device=.Platform$OS.type)
 library(ggplot2)
 
 # needed for reshaping data frames
-library(reshape2)
-
-#used for querying data, performing aggregations, filtering, etc.
-library(sqldf)
+# library(reshape2)
+#
+# #used for querying data, performing aggregations, filtering, etc.
+# library(sqldf)
 
 df_preExperiment = read.table("netlogo/pre-experiment.csv", skip = 6, sep = ",", head=TRUE)
 # Remove the X. in the column names
