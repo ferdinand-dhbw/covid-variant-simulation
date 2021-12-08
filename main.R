@@ -24,3 +24,11 @@ ggplot(data=df_preExperiment, aes(x=step., y=n.sick.people, group=run.number.)) 
   ylab("Number of infected people") +
   ggtitle("Number of infected people over time") + #give the plot a title
   scale_colour_manual("Run",values = rainbow(max(df_preExperiment$run.number., na.rm = FALSE)))
+ggsave("./diagrams/pre-ex/arrayOfCurves.png")
+
+ggplot(data=df_preExperiment, aes(x=step., y=n.sick.people, group=round(step./7))) + #use myDataFrame for the data, columns for x and y
+  geom_boxplot() +
+  xlab("Days") +  #specify x and y labels
+  ylab("Number of infected people") +
+  ggtitle("Number of infected people over time")
+ggsave("./diagrams/pre-ex/boxplot.png")
