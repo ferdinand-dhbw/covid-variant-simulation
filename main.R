@@ -47,7 +47,7 @@ ggplot(data = duration, aes(x='run', y=x)) +
   ggtitle("Distribution of duration")
 ggsave("./diagrams/pre-ex/duration.png")
 
-# 24 times, the virus was wiped out earlier
+# 23 times, the virus was wiped out earlier
 # According to the previous boxplot these are still outliers
 lengths(duration[duration$x < 720, ])
 
