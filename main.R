@@ -118,7 +118,19 @@ readline(prompt = "Press [enter] to continue")
 # TODO Comparison with duration of pre-ex => shorter duration in general?
 
 # Variant 0 died
-sqldf("select * from df_similarVariant where [n.people.exposed.var0] = 0 and [n.people.sick.var0] = 0")
+df_simVar_var0died <- sqldf("select [step.] from df_similarVariant where [n.people.exposed.var0] = 0 and [n.people.sick.var0] = 0")
+df_simVar_var0died
+
+ggplot(data=df_simVar_var0died, aes(x=step., y = 0)) +
+  geom_boxplot() +
+  geom_point(alpha=0.25, position = position_jitter(w = 0, h = 0.1)) +
+  # geom_jitter() +
+  xlab("Day of extinction (variant 0)") +  #specify x and y labels
+  ylab("") +
+  ggtitle("Extinction of variant 0 over time (7 day bins) [similar-variant]")
+ggsave("./diagrams/sim-var/timeOfExtinctionVar0.png")
+readline(prompt = "Press [enter] to continue")
+
 
 # Variant 1 died
-sqldf("select * from df_similarVariant where [n.people.exposed.var1] = 0 and [n.people.sick.var1] = 0")
+df_simVar_var1died <- sqldf("select [step.] from df_similarVariant where [n.people.exposed.var1] = 0 and [n.people.sick.var1] = 0")
