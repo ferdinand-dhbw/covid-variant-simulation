@@ -150,3 +150,4 @@ ggsave("./diagrams/sim-var/timeOfExtinctionVar1.png")
 lengths(df_simVar_var1died)
 
 # TODO run 1000 times (maybe concurrent)
+# TODO Tell why
