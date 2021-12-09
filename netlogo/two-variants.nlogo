@@ -382,9 +382,11 @@ Ecological biologists have suggested a number of factors which may influence the
 
 Extension: Moved from SIR model to SEIR model. Parameters set in a way that the virus is emerging in waves.
 
+Extension: Now, 2 variants
+
 ## HOW IT WORKS
 
-The model is initialized with 1500 people, of which 10 are infected.  People move randomly about the world in one of three states: healthy but susceptible to infection (S: green), healthy but exposed (E: yellow), and healthy and immune (gray). If a person is sick and infectious (I: red) a person stops moving. People may die of infection or old age.  When the population dips below the environment's "carrying capacity" (set at 1500 in this model) healthy people may produce healthy (but susceptible) offspring.
+The model is initialized with 1500 people, of which 10 (50:50) are infected.  People move randomly about the world in one of three states: healthy but susceptible to infection (S: green), healthy but exposed (E: yellow, pink), and healthy and immune (gray). If a person is sick and infectious (I: red, violet) a person stops moving. People may die of infection or old age.  When the population dips below the environment's "carrying capacity" (set at 1500 in this model) healthy people may produce healthy (but susceptible) offspring.
 
 Some of these factors are summarized below with an explanation of how each one is treated in this model.
 
@@ -400,10 +402,11 @@ In this model, people die of old age at the age of 80 years.  Reproduction rate 
 
 ### Transitions
 
-S -> E (gets exposed with a certain chance if in contact with sick person)
-S,E,I,R -> D (dies of old age)
-I -> R | D (gets healthy and immune or dies)
-E -> I (from exposed to infectous after 4 days)
+S -> E0, E1 (gets exposed with a certain chance if in contact with sick person)
+S,E0,E1,I0,I1,R -> D (dies of old age)
+I0, I1 -> R | D (gets healthy and immune or dies)
+E0 -> I0 (from exposed to infectous after 4 days)
+E1 -> I1 (from exposed to infectous after 4 days)
 R -> S (immunity is limited)
 
 ## HOW TO USE IT
@@ -438,7 +441,7 @@ If you mention this model or the NetLogo software in a publication, we ask that 
 
 For the model itself:
 
-* Wilensky, U.; Koenig, F. (1998, 2021).  NetLogo Virus model. SEIR Extension. http://ccl.northwestern.edu/netlogo/models/Virus. Center for Connected Learning and Computer-Based Modeling, Northwestern University, Evanston, IL. https://github.com/ferdinand-dhbw/covid-variant-simulation
+* Wilensky, U.; Koenig, F. (1998, 2021).  NetLogo Virus model. SEIR and two variants Extension. http://ccl.northwestern.edu/netlogo/models/Virus. Center for Connected Learning and Computer-Based Modeling, Northwestern University, Evanston, IL. https://github.com/ferdinand-dhbw/covid-variant-simulation
 
 Please cite the NetLogo software as:
 
