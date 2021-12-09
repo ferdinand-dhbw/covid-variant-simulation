@@ -1,0 +1,1 @@
+"C:\Program Files\NetLogo 6.2.1\netlogo-headless.bat" --model "two-variants.nlogo" --experiment "similar-variant" --table "similar-variant.csv"

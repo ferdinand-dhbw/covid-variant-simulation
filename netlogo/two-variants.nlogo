@@ -750,15 +750,17 @@ NetLogo 6.2.1
 @#$#@#$#@
 @#$#@#$#@
 <experiments>
-  <experiment name="initial-experiment-24m" repetitions="100" runMetricsEveryStep="true">
+  <experiment name="similar-variant" repetitions="100" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="720"/>
-    <metric>n-total-people</metric>
-    <metric>n-healthy-people</metric>
-    <metric>n-immune-people</metric>
-    <metric>n-exposed-people</metric>
-    <metric>n-sick-people</metric>
+    <metric>n-people-total</metric>
+    <metric>n-people-healthy</metric>
+    <metric>n-people-sick-var0</metric>
+    <metric>n-people-sick-var1</metric>
+    <metric>n-people-immune</metric>
+    <metric>n-people-exposed-var0</metric>
+    <metric>n-people-exposed-var1</metric>
     <enumeratedValueSet variable="duration">
       <value value="15"/>
     </enumeratedValueSet>
