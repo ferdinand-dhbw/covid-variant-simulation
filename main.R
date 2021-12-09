@@ -2,6 +2,7 @@
 #this will save you a lot of confusion
 options(stringsAsFactors = FALSE)
 options(device=.Platform$OS.type)
+options(gsubfn.engine = "R")
 
 #these are from two separate packages
 library(ggplot2)
@@ -115,3 +116,9 @@ ggsave("./diagrams/sim-var/duration.png")
 readline(prompt = "Press [enter] to continue")
 
 # TODO Comparison with duration of pre-ex => shorter duration in general?
+
+# Variant 0 died
+sqldf("select * from df_similarVariant where [n.people.exposed.var0] = 0 and [n.people.sick.var0] = 0")
+
+# Variant 1 died
+sqldf("select * from df_similarVariant where [n.people.exposed.var1] = 0 and [n.people.sick.var1] = 0")
