@@ -8,9 +8,9 @@ library(ggplot2)
 
 # needed for reshaping data frames
 # library(reshape2)
-#
-# #used for querying data, performing aggregations, filtering, etc.
-# library(sqldf)
+
+#used for querying data, performing aggregations, filtering, etc.
+library(sqldf)
 
 ##### PRE-EXPERIMENT #####
 df_preExperiment = read.table("netlogo/pre-experiment.csv", skip = 6, sep = ",", head=TRUE)
@@ -91,21 +91,27 @@ ggsave("./diagrams/sim-var/boxplot1.png")
 readline(prompt = "Press [enter] to continue")
 
 
-#
-# duration = aggregate(df_preExperiment$step., by = list(df_preExperiment$run.number.), max)
-# colnames(duration)[0] = 'run'
-# colnames(duration)[1] = 'duration'
-#
-# duration
-#
-# ggplot(data = duration, aes(x='run', y=x)) +
-#   geom_boxplot() +
-#   ylab("Duration of epidemic in days") +
-#   xlab("runs") +
-#   ggtitle("Distribution of duration [pre-experiment]")
-# ggsave("./diagrams/pre-ex/duration.png")
-# readline(prompt = "Press [enter] to continue")
+duration = aggregate(df_similarVariant$step., by = list(df_similarVariant$run.number.), max)
+colnames(duration)[1] = 'run'
+colnames(duration)[2] = 'duration'
+
 
 # 23 times, the virus was wiped out earlier
 # According to the previous boxplot these are still outliers
 lengths(duration[duration$x < 720, ])
+
+
+duration$duration = round(duration$duration /7)
+
+duration
+
+ggplot(data = duration, aes(x=as.factor(duration)), group=round(step./7)) +
+  geom_bar() +
+  ylab("number / count") +
+  xlab("length of epidemic in weeks") +
+  scale_x_discrete(limits = as.factor(1:round(720/7)), breaks = seq(1, round(720/7), by=2)) +
+  ggtitle("Distribution of duration [similar-variant]")
+ggsave("./diagrams/sim-var/duration.png")
+readline(prompt = "Press [enter] to continue")
+
+# TODO Comparison with duration of pre-ex => shorter duration in general?
