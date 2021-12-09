@@ -131,6 +131,22 @@ ggplot(data=df_simVar_var0died, aes(x=step., y = 0)) +
 ggsave("./diagrams/sim-var/timeOfExtinctionVar0.png")
 readline(prompt = "Press [enter] to continue")
 
+# 48 times var 0 died
+lengths(df_simVar_var0died)
+
 
 # Variant 1 died
 df_simVar_var1died <- sqldf("select [step.] from df_similarVariant where [n.people.exposed.var1] = 0 and [n.people.sick.var1] = 0")
+ggplot(data=df_simVar_var1died, aes(x=step., y = 0)) +
+  geom_boxplot() +
+  geom_point(alpha=0.25, position = position_jitter(w = 0, h = 0.1)) +
+  # geom_jitter() +
+  xlab("Day of extinction (variant 0)") +  #specify x and y labels
+  ylab("") +
+  ggtitle("Extinction of variant 0 over time (7 day bins) [similar-variant]")
+ggsave("./diagrams/sim-var/timeOfExtinctionVar1.png")
+
+# 37 times var 1 died
+lengths(df_simVar_var1died)
+
+# TODO run 1000 times (maybe concurrent)
