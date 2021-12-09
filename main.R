@@ -12,6 +12,7 @@ library(ggplot2)
 # #used for querying data, performing aggregations, filtering, etc.
 # library(sqldf)
 
+##### PRE-EXPERIMENT #####
 df_preExperiment = read.table("netlogo/pre-experiment.csv", skip = 6, sep = ",", head=TRUE)
 # Remove the X. in the column names
 colnames(df_preExperiment) = gsub("X\\.", "", colnames(df_preExperiment))
@@ -49,3 +50,5 @@ ggsave("./diagrams/pre-ex/duration.png")
 # 24 times, the virus was wiped out earlier
 # According to the previous boxplot these are still outliers
 lengths(duration[duration$x < 720, ])
+
+##### SIMILAR-VARIANT #####

@@ -171,7 +171,7 @@ to-report n-immune-people
 end
 
 to-report n-healthy-people
-  report count turtles with [not sick? and not immune?]
+  report count turtles with [not sick? and not immune? and not exposed?]
 end
 
 to-report n-exposed-people
