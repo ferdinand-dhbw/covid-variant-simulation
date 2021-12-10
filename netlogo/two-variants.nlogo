@@ -750,7 +750,7 @@ NetLogo 6.2.1
 @#$#@#$#@
 @#$#@#$#@
 <experiments>
-  <experiment name="similar-variant" repetitions="100" runMetricsEveryStep="true">
+  <experiment name="similar-variant" repetitions="1000" runMetricsEveryStep="true">
     <setup>setup</setup>
     <go>go</go>
     <timeLimit steps="720"/>
