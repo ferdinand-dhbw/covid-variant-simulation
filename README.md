@@ -10,3 +10,7 @@ Setup renv:
 2. ```renv::restore()```
 
 To save the current env: ```renv::snapshot()```
+
+
+## Execution time 
+approx. 10 min for 2nd experiment
