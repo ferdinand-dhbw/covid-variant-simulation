@@ -116,9 +116,9 @@ colnames(duration)[1] = 'run'
 colnames(duration)[2] = 'duration'
 
 
-# 23 times, the virus was wiped out earlier
+# 243 times, the viruses were wiped out earlier  TODO similar to pre-ex
 # According to the previous boxplot these are still outliers
-lengths(duration[duration$x < 720, ])
+lengths(duration[duration$duration < 720, ])
 
 
 duration$duration = round(duration$duration /7)
@@ -135,11 +135,15 @@ readline(prompt = "Press [enter] to continue")
 ggsave("./diagrams/sim-var/duration.png")
 
 
-# TODO Comparison with duration of pre-ex => shorter duration in general?
 
 ## Variant 0 died ##
-df_simVar_var0died <- sqldf("select [step.], [n.people.exposed.var1], [n.people.sick.var1] from df_similarVariant where [n.people.exposed.var0] = 0 and [n.people.sick.var0] = 0")
-df_simVar_var0died
+# get every tuple after variant 0 died
+df_simVar_var0died <- sqldf("select [run.number.], [step.], [n.people.exposed.var1], [n.people.sick.var1] from df_similarVariant where [n.people.exposed.var0] = 0 and [n.people.sick.var0] = 0")
+head(df_simVar_var0died)
+
+# get the first point in time => time of extinction of each run
+df_simVar_var0died = df_simVar_var0died[!duplicated(df_simVar_var0died$run.number.),]
+head(df_simVar_var0died)
 
 ggplot(data=df_simVar_var0died, aes(x=step., y = 0)) +
   geom_boxplot() +
