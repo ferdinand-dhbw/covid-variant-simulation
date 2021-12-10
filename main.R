@@ -26,34 +26,49 @@ ggplot(data=df_preExperiment, aes(x=step., y=n.sick.people, group=run.number.)) 
   ylab("Number of infected people") +
   ggtitle("Number of infected people over time [pre-experiment]") + #give the plot a title
   scale_colour_manual("Run",values = rainbow(max(df_preExperiment$run.number., na.rm = FALSE)))
-ggsave("./diagrams/pre-ex/arrayOfCurves.png")
 readline(prompt = "Press [enter] to continue")
+ggsave("./diagrams/pre-ex/arrayOfCurves.png")
 
 ggplot(data=df_preExperiment, aes(x=step., y=n.sick.people, group=round(step./7))) +
   geom_boxplot() +
   xlab("Days") +  #specify x and y labels
   ylab("Number of infected people") +
   ggtitle("Number of infected people over time (7 day bins) [pre-experiment]")
-ggsave("./diagrams/pre-ex/boxplot.png")
 readline(prompt = "Press [enter] to continue")
+ggsave("./diagrams/pre-ex/boxplot.png")
+
 
 duration = aggregate(df_preExperiment$step., by = list(df_preExperiment$run.number.), max)
-colnames(duration)[0] = 'run'
-colnames(duration)[1] = 'duration'
+colnames(duration)[1] = 'run'
+colnames(duration)[2] = 'duration'
 
 duration
-
-ggplot(data = duration, aes(x='run', y=x)) +
-  geom_boxplot() +
-  ylab("Duration of epidemic in days") +
-  xlab("runs") +
-  ggtitle("Distribution of duration [pre-experiment]")
-ggsave("./diagrams/pre-ex/duration.png")
-readline(prompt = "Press [enter] to continue")
 
 # 23 times, the virus was wiped out earlier
 # According to the previous boxplot these are still outliers
 lengths(duration[duration$x < 720, ])
+
+duration$duration = round(duration$duration /7)
+
+# ggplot(data = duration, aes(x='run', y=x)) +
+#   geom_boxplot() +
+#   ylab("Duration of epidemic in days") +
+#   xlab("runs") +
+#   ggtitle("Distribution of duration [pre-experiment]")
+# ggsave("./diagrams/pre-ex/duration.png")
+# readline(prompt = "Press [enter] to continue")
+
+ggplot(data = duration, aes(x=as.factor(duration)), group=round(step./7)) +
+  geom_bar() +
+  ylab("number / count") +
+  xlab("length of epidemic in weeks") +
+  scale_x_discrete(limits = as.factor(1:(round(720/7)+1)), breaks = seq(1, round(720/7), by=2)) +
+  ggtitle("Distribution of duration [pre-ex]")
+readline(prompt = "Press [enter] to continue")
+ggsave("./diagrams/pre-ex/duration.png")
+
+
+# TODO how often did it end earlier?
 
 ###########################
 ##### SIMILAR-VARIANT #####
@@ -72,8 +87,9 @@ ggplot(data=df_similarVariant, aes(x=step., y=n.people.sick.var0, group=run.numb
   scale_colour_manual("Run",values = rainbow(max(df_similarVariant$run.number., na.rm = FALSE)))
   # scale_color_gradient(low="blue", high="red")
   # scale_fill_distiller(palette = "RdPu")
-ggsave("./diagrams/sim-var/arrayOfCurvesVar0.png")
 readline(prompt = "Press [enter] to continue")
+ggsave("./diagrams/sim-var/arrayOfCurvesVar0.png")
+
 
 
 ggplot(data=df_similarVariant, aes(x=step., y=n.people.sick.var0, group=round(step./7))) +
@@ -81,16 +97,18 @@ ggplot(data=df_similarVariant, aes(x=step., y=n.people.sick.var0, group=round(st
   xlab("Days") +  #specify x and y labels
   ylab("Number of infected people (variant 0)") +
   ggtitle("Number of with variant 0 infected people over time (7 day bins) [similar-variant]")
-ggsave("./diagrams/sim-var/boxplot0.png")
 readline(prompt = "Press [enter] to continue")
+ggsave("./diagrams/sim-var/boxplot0.png")
+
 
 ggplot(data=df_similarVariant, aes(x=step., y=n.people.sick.var1, group=round(step./7))) +
   geom_boxplot() +
   xlab("Days") +  #specify x and y labels
   ylab("Number of infected people (variant 1)") +
   ggtitle("Number of with variant 1 infected people over time (7 day bins) [similar-variant]")
-ggsave("./diagrams/sim-var/boxplot1.png")
 readline(prompt = "Press [enter] to continue")
+ggsave("./diagrams/sim-var/boxplot1.png")
+
 
 
 duration = aggregate(df_similarVariant$step., by = list(df_similarVariant$run.number.), max)
@@ -113,8 +131,9 @@ ggplot(data = duration, aes(x=as.factor(duration)), group=round(step./7)) +
   xlab("length of epidemic in weeks") +
   scale_x_discrete(limits = as.factor(1:round(720/7)), breaks = seq(1, round(720/7), by=2)) +
   ggtitle("Distribution of duration [similar-variant]")
-ggsave("./diagrams/sim-var/duration.png")
 readline(prompt = "Press [enter] to continue")
+ggsave("./diagrams/sim-var/duration.png")
+
 
 # TODO Comparison with duration of pre-ex => shorter duration in general?
 
@@ -129,8 +148,9 @@ ggplot(data=df_simVar_var0died, aes(x=step., y = 0)) +
   xlab("Day of extinction (variant 0)") +  #specify x and y labels
   ylab("") +
   ggtitle("Extinction of variant 0 over time [similar-variant]")
-ggsave("./diagrams/sim-var/timeOfExtinctionVar0.png")
 readline(prompt = "Press [enter] to continue")
+ggsave("./diagrams/sim-var/timeOfExtinctionVar0.png")
+
 
 # was the other variant also on a low?
 df_simVar_var0died$n.people.var1 = df_simVar_var0died$n.people.exposed.var1 + df_simVar_var0died$n.people.sick.var1
@@ -141,8 +161,9 @@ ggplot(data=df_simVar_var0died, aes(x=0, y = n.people.var1)) +
   xlab("") +  #specify x and y labels
   ylab("Number of people with var1 (E+I)") +
   ggtitle("Number of people with var1 during time of extinction of var 1 [similar-variant]")
-ggsave("./diagrams/sim-var/levelVar1AfterExtinctionVar0.png")
 readline(prompt = "Press [enter] to continue")
+ggsave("./diagrams/sim-var/levelVar1AfterExtinctionVar0.png")
+
 
 # 48 times var 0 died
 # 481
@@ -158,8 +179,9 @@ ggplot(data=df_simVar_var1died, aes(x=step., y = 0)) +
   xlab("Day of extinction (variant 1)") +  #specify x and y labels
   ylab("") +
   ggtitle("Extinction of variant 1 over time [similar-variant]")
-ggsave("./diagrams/sim-var/timeOfExtinctionVar1.png")
 readline(prompt = "Press [enter] to continue")
+ggsave("./diagrams/sim-var/timeOfExtinctionVar1.png")
+
 
 # 37 times var 1 died
 # 446 times
@@ -174,7 +196,8 @@ ggplot(data=df_simVar_var1died, aes(x=0, y = n.people.var0)) +
   xlab("") +  #specify x and y labels
   ylab("Number of people with var0 (E+I)") +
   ggtitle("Number of people with var0 during time of extinction of var 1 [similar-variant]")
-ggsave("./diagrams/sim-var/levelVar0AfterExtinctionVar1.png")
 readline(prompt = "Press [enter] to continue")
+ggsave("./diagrams/sim-var/levelVar0AfterExtinctionVar1.png")
+
 # TODO run 1000 times (maybe concurrent)
 # TODO Tell why
