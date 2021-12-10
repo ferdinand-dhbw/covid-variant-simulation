@@ -95,7 +95,7 @@ end
 
 to go
   ;;stop if nobody is sick or exposed => variant is wiped out
-  if (count turtles with [sick0?] = 0 and count turtles with [exposed0?] = 0) or (count turtles with [sick1?] = 0 and count turtles with [exposed1?] = 0)
+  if (count turtles with [sick0?] = 0 and count turtles with [exposed0?] = 0) and (count turtles with [sick1?] = 0 and count turtles with [exposed1?] = 0)
   ;;or (%infected = 100 )
   [stop]
 

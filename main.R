@@ -68,8 +68,6 @@ readline(prompt = "Press [enter] to continue")
 ggsave("./diagrams/pre-ex/duration.png")
 
 
-# TODO how often did it end earlier?
-
 ###########################
 ##### SIMILAR-VARIANT #####
 df_similarVariant = read.table("netlogo/similar-variant.csv", skip = 6, sep = ",", head=TRUE)
@@ -116,9 +114,10 @@ colnames(duration)[1] = 'run'
 colnames(duration)[2] = 'duration'
 
 
-# 23 times, the virus was wiped out earlier
+# 243 times, the viruses were wiped out earlier  TODO similar to pre-ex
 # According to the previous boxplot these are still outliers
-lengths(duration[duration$x < 720, ])
+lengths(duration[duration$duration < 720, ])
+# A X and B X
 
 
 duration$duration = round(duration$duration /7)
@@ -135,11 +134,28 @@ readline(prompt = "Press [enter] to continue")
 ggsave("./diagrams/sim-var/duration.png")
 
 
-# TODO Comparison with duration of pre-ex => shorter duration in general?
 
 ## Variant 0 died ##
-df_simVar_var0died <- sqldf("select [step.], [n.people.exposed.var1], [n.people.sick.var1] from df_similarVariant where [n.people.exposed.var0] = 0 and [n.people.sick.var0] = 0")
-df_simVar_var0died
+# get every tuple after variant 0 died
+# A X, B X and V
+df_simVar_var0died <- sqldf("select [run.number.], [step.], [n.people.exposed.var1], [n.people.sick.var1] from df_similarVariant where [n.people.exposed.var0] = 0 and [n.people.sick.var0] = 0")
+head(df_simVar_var0died)
+
+# A X and B X
+df_simVar_var0thenvar1died <- sqldf("select [run.number.] from df_simVar_var0died where [n.people.exposed.var1] = 0 and [n.people.sick.var1] = 0")
+head(df_simVar_var0thenvar1died)
+lengths(df_simVar_var1thenvar0died)
+
+# A X and B V
+df_simVar_var0diedvar1survived <- df_simVar_var0died[!(df_simVar_var0died$run.number. %in% df_simVar_var0thenvar1died$run.number.),]
+df_simVar_var0diedvar1survived = df_simVar_var0diedvar1survived[!duplicated(df_simVar_var0diedvar1survived$run.number.),]
+lengths(df_simVar_var0diedvar1survived)
+head(df_simVar_var0diedvar1survived)
+# 336
+
+# get the first point in time => time of extinction of each run
+df_simVar_var0died = df_simVar_var0died[!duplicated(df_simVar_var0died$run.number.),]
+head(df_simVar_var0died)
 
 ggplot(data=df_simVar_var0died, aes(x=step., y = 0)) +
   geom_boxplot() +
@@ -171,7 +187,28 @@ lengths(df_simVar_var0died)
 
 
 ## Variant 1 died ##
-df_simVar_var1died <- sqldf("select [step.], [n.people.exposed.var0], [n.people.sick.var0] from df_similarVariant where [n.people.exposed.var1] = 0 and [n.people.sick.var1] = 0")
+# get every tuple after variant 1 died
+# B X, A X and V
+df_simVar_var1died <- sqldf("select [run.number.], [step.], [n.people.exposed.var0], [n.people.sick.var0] from df_similarVariant where [n.people.exposed.var1] = 0 and [n.people.sick.var1] = 0")
+head(df_simVar_var1died)
+
+# A X and B X
+df_simVar_var1thenvar0died <- sqldf("select [run.number.] from df_simVar_var1died where [n.people.exposed.var0] = 0 and [n.people.sick.var0] = 0")
+head(df_simVar_var1thenvar0died)
+
+# A V and B X
+df_simVar_var1diedvar0survived <- df_simVar_var1died[!(df_simVar_var1died$run.number. %in% df_simVar_var1thenvar0died$run.number.),]
+df_simVar_var1diedvar0survived = df_simVar_var1diedvar0survived[!duplicated(df_simVar_var1diedvar0survived$run.number.),]
+lengths(df_simVar_var1diedvar0survived)
+head(df_simVar_var1diedvar0survived)
+# 335
+
+# get the first point in time => time of extinction of each run
+df_simVar_var1died = df_simVar_var1died[!duplicated(df_simVar_var1died$run.number.),]
+head(df_simVar_var1died)
+
+
+
 ggplot(data=df_simVar_var1died, aes(x=step., y = 0)) +
   geom_boxplot() +
   geom_point(alpha=0.25, position = position_jitter(w = 0, h = 0.1)) +
@@ -199,6 +236,7 @@ ggplot(data=df_simVar_var1died, aes(x=0, y = n.people.var0)) +
 readline(prompt = "Press [enter] to continue")
 ggsave("./diagrams/sim-var/levelVar0AfterExtinctionVar1.png")
 
+
 # TODO run 1000 times (maybe concurrent)
 # TODO Tell why
-# TODO Disclaimer that this is just script code
+# TODO Disclaimer that this is just script code, code might be not idempotent
