@@ -46,7 +46,7 @@ duration
 
 # 23 times, the virus was wiped out earlier
 # According to the previous boxplot these are still outliers
-lengths(duration[duration$x < 720, ])
+lengths(duration[duration$duration < 720, ])
 
 duration$duration = round(duration$duration /7)
 
@@ -201,3 +201,4 @@ ggsave("./diagrams/sim-var/levelVar0AfterExtinctionVar1.png")
 
 # TODO run 1000 times (maybe concurrent)
 # TODO Tell why
+# TODO Disclaimer that this is just script code
