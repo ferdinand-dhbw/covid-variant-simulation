@@ -65,6 +65,7 @@ summary(df_similarVariant)
 # Array of curves
 ggplot(data=df_similarVariant, aes(x=step., y=n.people.sick.var0, group=run.number., color=qsec)) + #use myDataFrame for the data, columns for x and y
   geom_line(aes(colour = as.factor(run.number.))) + #we want to use points, colored by runNumber
+  theme(legend.position = "none") +
   xlab("Days") +  #specify x and y labels
   ylab("Number of infected people (variant 0)") +
   ggtitle("Number of with variant 0 infected people over time [similar-variant]") + #give the plot a title
@@ -117,8 +118,8 @@ readline(prompt = "Press [enter] to continue")
 
 # TODO Comparison with duration of pre-ex => shorter duration in general?
 
-# Variant 0 died
-df_simVar_var0died <- sqldf("select [step.] from df_similarVariant where [n.people.exposed.var0] = 0 and [n.people.sick.var0] = 0")
+## Variant 0 died ##
+df_simVar_var0died <- sqldf("select [step.], [n.people.exposed.var1], [n.people.sick.var1] from df_similarVariant where [n.people.exposed.var0] = 0 and [n.people.sick.var0] = 0")
 df_simVar_var0died
 
 ggplot(data=df_simVar_var0died, aes(x=step., y = 0)) +
@@ -127,27 +128,53 @@ ggplot(data=df_simVar_var0died, aes(x=step., y = 0)) +
   # geom_jitter() +
   xlab("Day of extinction (variant 0)") +  #specify x and y labels
   ylab("") +
-  ggtitle("Extinction of variant 0 over time (7 day bins) [similar-variant]")
+  ggtitle("Extinction of variant 0 over time [similar-variant]")
 ggsave("./diagrams/sim-var/timeOfExtinctionVar0.png")
 readline(prompt = "Press [enter] to continue")
 
+# was the other variant also on a low?
+df_simVar_var0died$n.people.var1 = df_simVar_var0died$n.people.exposed.var1 + df_simVar_var0died$n.people.sick.var1
+ggplot(data=df_simVar_var0died, aes(x=0, y = n.people.var1)) +
+  geom_boxplot() +
+  geom_point(alpha=0.25, position = position_jitter(w = 0.1, h = 0)) +
+  # geom_jitter() +
+  xlab("") +  #specify x and y labels
+  ylab("Number of people with var1 (E+I)") +
+  ggtitle("Number of people with var1 during time of extinction of var 1 [similar-variant]")
+ggsave("./diagrams/sim-var/levelVar1AfterExtinctionVar0.png")
+readline(prompt = "Press [enter] to continue")
+
 # 48 times var 0 died
+# 481
 lengths(df_simVar_var0died)
 
 
-# Variant 1 died
-df_simVar_var1died <- sqldf("select [step.] from df_similarVariant where [n.people.exposed.var1] = 0 and [n.people.sick.var1] = 0")
+## Variant 1 died ##
+df_simVar_var1died <- sqldf("select [step.], [n.people.exposed.var0], [n.people.sick.var0] from df_similarVariant where [n.people.exposed.var1] = 0 and [n.people.sick.var1] = 0")
 ggplot(data=df_simVar_var1died, aes(x=step., y = 0)) +
   geom_boxplot() +
   geom_point(alpha=0.25, position = position_jitter(w = 0, h = 0.1)) +
   # geom_jitter() +
-  xlab("Day of extinction (variant 0)") +  #specify x and y labels
+  xlab("Day of extinction (variant 1)") +  #specify x and y labels
   ylab("") +
-  ggtitle("Extinction of variant 0 over time (7 day bins) [similar-variant]")
+  ggtitle("Extinction of variant 1 over time [similar-variant]")
 ggsave("./diagrams/sim-var/timeOfExtinctionVar1.png")
+readline(prompt = "Press [enter] to continue")
 
 # 37 times var 1 died
+# 446 times
 lengths(df_simVar_var1died)
 
+# was the other variant also on a low?
+df_simVar_var1died$n.people.var0 = df_simVar_var1died$n.people.exposed.var0 + df_simVar_var1died$n.people.sick.var0
+ggplot(data=df_simVar_var1died, aes(x=0, y = n.people.var0)) +
+  geom_boxplot() +
+  geom_point(alpha=0.25, position = position_jitter(w = 0.1, h = 0)) +
+  # geom_jitter() +
+  xlab("") +  #specify x and y labels
+  ylab("Number of people with var0 (E+I)") +
+  ggtitle("Number of people with var0 during time of extinction of var 1 [similar-variant]")
+ggsave("./diagrams/sim-var/levelVar0AfterExtinctionVar1.png")
+readline(prompt = "Press [enter] to continue")
 # TODO run 1000 times (maybe concurrent)
 # TODO Tell why
