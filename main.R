@@ -114,7 +114,7 @@ colnames(duration)[1] = 'run'
 colnames(duration)[2] = 'duration'
 
 
-# 243 times, the viruses were wiped out earlier  TODO similar to pre-ex
+# 243 times, the viruses were wiped out earlier
 # According to the previous boxplot these are still outliers
 lengths(duration[duration$duration < 720, ])
 # A X and B X
@@ -176,7 +176,7 @@ ggplot(data=df_simVar_var0died, aes(x=0, y = n.people.var1)) +
   # geom_jitter() +
   xlab("") +  #specify x and y labels
   ylab("Number of people with var1 (E+I)") +
-  ggtitle("Number of people with var1 during time of extinction of var 1 [similar-variant]")
+  ggtitle("Number of people with var1 during time of extinction of var 0 [similar-variant]")
 readline(prompt = "Press [enter] to continue")
 ggsave("./diagrams/sim-var/levelVar1AfterExtinctionVar0.png")
 
@@ -236,7 +236,3 @@ ggplot(data=df_simVar_var1died, aes(x=0, y = n.people.var0)) +
 readline(prompt = "Press [enter] to continue")
 ggsave("./diagrams/sim-var/levelVar0AfterExtinctionVar1.png")
 
-
-# TODO run 1000 times (maybe concurrent)
-# TODO Tell why
-# TODO Disclaimer that this is just script code, code might be not idempotent
